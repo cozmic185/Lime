@@ -1,0 +1,9 @@
+Audio:
+    - Implement streaming
+    - Support more audio formats
+
+Physics:
+    - AABB, Circle, Ray
+    - Collision detection functions for all combinations
+
+..and more
