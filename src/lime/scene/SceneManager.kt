@@ -23,7 +23,7 @@ class SceneManager {
 
     fun isActive(name: String) = name in active
 
-    fun processAll(delta: Float) {
+    fun processAll(delta: Double) {
         scenes.forEach { (name, scene) ->
             if (isActive(name))
                 scene.process(delta)

@@ -23,7 +23,7 @@ class AnimationRenderingSystem : IteratingSystem() {
         val transform by component<TransformComponent>()
     }
 
-    override fun processEntity(delta: Float, entity: Entity) {
+    override fun processEntity(delta: Double, entity: Entity) {
         with(componentSet) {
             this.entity = entity
 

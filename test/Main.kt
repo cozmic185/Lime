@@ -1,13 +1,6 @@
 import lime.Application
 import lime.Lime
-import lime.audio.Sound
-import lime.config
-import lime.editor.Editor
-import lime.graphics.*
-import lime.graphics.fonts.Font
-import lime.graphics.fonts.GlyphLayout
 import lime.input.Keys
-import lime.scene.Scene
 import lime.scene.components.SpriteComponent
 import lime.scene.components.TransformComponent
 import lime.scene.systems.AnimationRenderingSystem

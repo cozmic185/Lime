@@ -31,15 +31,15 @@ class View(val camera: Camera = Camera()) {
         currentIndex = 0
     }
 
-    fun draw(texture: Texture, x: Float, y: Float, width: Float, height: Float, color: Color = Color.WHITE) {
+    fun draw(texture: Texture, x: Float, y: Float, width: Float, height: Float, color: Color = Color.WHITE, u0: Float = texture.u0, v0: Float = texture.v0, u1: Float = texture.u1, v1: Float = texture.v1) {
         ensureSize(4, 6)
 
         val colorBits = color.bits
 
-        addVertex(x, y, texture.u0, texture.v0, colorBits)
-        addVertex(x + width, y, texture.u1, texture.v0, colorBits)
-        addVertex(x + width, y + height, texture.u1, texture.v1, colorBits)
-        addVertex(x, y + height, texture.u0, texture.v1, colorBits)
+        addVertex(x, y, u0, v0, colorBits)
+        addVertex(x + width, y, u1, v0, colorBits)
+        addVertex(x + width, y + height, u1, v1, colorBits)
+        addVertex(x, y + height, u0, v1, colorBits)
 
         addIndex(currentIndex)
         addIndex(currentIndex + 1)

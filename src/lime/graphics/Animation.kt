@@ -4,7 +4,7 @@ import lime.maths.randomInt
 import kotlin.math.max
 import kotlin.math.min
 
-class Animation(var frameDuration: Float, private vararg val keyFrames: ImageTexture) {
+class Animation(var frameDuration: Double, private vararg val keyFrames: ImageTexture) {
     enum class Mode {
         NORMAL,
         REVERSED,
@@ -18,10 +18,10 @@ class Animation(var frameDuration: Float, private vararg val keyFrames: ImageTex
     var mode = Mode.NORMAL
 
     private var lastFrameIndex = 0
-    private var lastFrameTime = 0.0f
+    private var lastFrameTime = 0.0
 
 
-    fun getKeyFrame(stateTime: Float): ImageTexture {
+    fun getKeyFrame(stateTime: Double): ImageTexture {
         val index = getKeyFrameIndex(stateTime)
         return keyFrames[index]
     }
@@ -31,7 +31,7 @@ class Animation(var frameDuration: Float, private vararg val keyFrames: ImageTex
         return keyFrames.size - 1 < index
     }
 
-    private fun getKeyFrameIndex(stateTime: Float): Int {
+    private fun getKeyFrameIndex(stateTime: Double): Int {
         if (keyFrames.size == 1)
             return 0
 

@@ -81,6 +81,8 @@ class Audio internal constructor(updateRate: Int) : Disposable {
     private val queue = Bag<() -> Unit>()
     private val buffers = Bag<Buffer>()
 
+    val numActive get() = activeSources.size
+
     init {
         device = alcOpenDevice(null as ByteBuffer?)
 

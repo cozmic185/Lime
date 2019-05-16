@@ -15,7 +15,7 @@ class ScriptSystem : IteratingSystem() {
         val script by component<ScriptComponent>()
     }
 
-    override fun processEntity(delta: Float, entity: Entity) {
+    override fun processEntity(delta: Double, entity: Entity) {
         componentSet.entity = entity
         componentSet.script.script?.let {
             if (!componentSet.script.isStarted) {

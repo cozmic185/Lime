@@ -111,7 +111,7 @@ class Scene : Disposable {
         }
     }
 
-    fun process(delta: Float) {
+    fun process(delta: Double) {
         if (sortSystems) {
             systems.sortBy { it.priority }
             sortSystems = false

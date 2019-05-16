@@ -132,9 +132,9 @@ object Lime {
             if (mode == Lime.EngineMode.EDITOR)
                 requireNotNull(Editor.window).render()
             else {
-                graphics.beginFrame()
+                graphics.beginFrame(deltaTime)
                 application.onFrame(deltaTime)
-                scenes.processAll(deltaTime.toFloat())
+                scenes.processAll(deltaTime)
                 views.render()
                 graphics.endFrame()
             }

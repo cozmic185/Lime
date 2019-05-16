@@ -2,6 +2,7 @@ package lime.graphics
 
 import org.lwjgl.system.MemoryStack.stackPush
 import lime.Lime
+import lime.graphics.backgrounds.Background
 import lime.graphics.fonts.Font
 import lime.graphics.fonts.GlyphLayout
 import lime.graphics.paths.Path
@@ -41,6 +42,8 @@ class Graphics internal constructor(private val adjustToContentScale: Boolean) :
             setTextureFilter()
         }
 
+    var background: Background? = null
+
     internal var blankU = 0.0f
         private set
 
@@ -51,6 +54,9 @@ class Graphics internal constructor(private val adjustToContentScale: Boolean) :
         private set
 
     var height = 0
+        private set
+
+    var textureSize = 0
         private set
 
     private var vbo = 0
@@ -68,7 +74,6 @@ class Graphics internal constructor(private val adjustToContentScale: Boolean) :
     private val debugLayout by lazy { GlyphLayout() }
     private val debugBackgroundPath by lazy { Path() }
     private val debugBackgroundColor by lazy { Color(0.25f, 0.25f, 0.25f, 0.25f) }
-    private var textureSize = 0
     private var verticesCounter = 0
     private var indicesCounter = 0
     private var drawCalls = 0
@@ -148,7 +153,7 @@ class Graphics internal constructor(private val adjustToContentScale: Boolean) :
         projViewUniform = glGetUniformLocation(shader, "uProjView")
     }
 
-    fun beginFrame() {
+    fun beginFrame(delta: Double) {
         verticesCounter = 0
         indicesCounter = 0
         drawCalls = 0
@@ -179,6 +184,11 @@ class Graphics internal constructor(private val adjustToContentScale: Boolean) :
 
         glUseProgram(shader)
         glBindTexture(GL_TEXTURE_2D, texture)
+
+        background?.let {
+            it.frame(delta)
+            render(it.view)
+        }
     }
 
     fun endFrame() {
@@ -195,6 +205,7 @@ class Graphics internal constructor(private val adjustToContentScale: Boolean) :
             Draw Calls:      $drawCalls
             Drawn Vertices:  $verticesCounter
             Drawn Indices:   $indicesCounter
+            Audio Sources:   ${Lime.audio.numActive}
             Memory Usage:    ${Runtime.getRuntime().let { ((it.totalMemory() - it.freeMemory()) shr 10) shr 10 }} MB
         """.trimIndent()
                 )

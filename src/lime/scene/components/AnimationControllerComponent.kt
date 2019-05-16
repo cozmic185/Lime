@@ -8,18 +8,18 @@ import java.io.DataOutput
 
 class AnimationControllerComponent : Component() {
     var mode = Animation.Mode.NORMAL
-    var stateTime = 0.0f
+    var stateTime = 0.0
     var playing = false
 
     override fun read(input: DataInput) {
         mode = Animation.Mode.values()[clamp(input.readInt(), 0, Animation.Mode.values().size - 1)]
-        stateTime = input.readFloat()
+        stateTime = input.readDouble()
         playing = input.readBoolean()
     }
 
     override fun write(output: DataOutput) {
         output.writeInt(mode.ordinal)
-        output.writeFloat(stateTime)
+        output.writeDouble(stateTime)
         output.writeBoolean(playing)
     }
 }
