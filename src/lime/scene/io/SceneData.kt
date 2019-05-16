@@ -6,7 +6,7 @@ import lime.scene.Scene
 data class SceneData(val entities: MutableList<EntityData> = arrayListOf()) {
     fun read(scene: Scene) {
         entities.forEach {
-            val entity = scene.getEntityByID(it.id) ?: scene.createEntity()
+            val entity = scene.createEntity()
             it.read(entity)
         }
     }
@@ -20,6 +20,5 @@ data class SceneData(val entities: MutableList<EntityData> = arrayListOf()) {
                 entities += data
             }
         }
-        entities.sortBy { it.id } // Needed so that deserialization works correctly with newly created entities
     }
 }

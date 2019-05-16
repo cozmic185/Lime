@@ -1,8 +1,8 @@
 package lime.scene.components
 
-import lime.io.DataReader
-import lime.io.DataWriter
 import lime.scene.Component
+import java.io.DataInput
+import java.io.DataOutput
 
 class TransformComponent : Component() {
     var x = 0.0f
@@ -10,17 +10,17 @@ class TransformComponent : Component() {
     var scaleX = 1.0f
     var scaleY = 1.0f
 
-    override fun read(reader: DataReader) {
-        x = reader.readFloat()
-        y = reader.readFloat()
-        scaleX = reader.readFloat()
-        scaleY = reader.readFloat()
+    override fun read(input: DataInput) {
+        x = input.readFloat()
+        y = input.readFloat()
+        scaleX = input.readFloat()
+        scaleY = input.readFloat()
     }
 
-    override fun write(writer: DataWriter) {
-        writer.writeFloat(x)
-        writer.writeFloat(y)
-        writer.writeFloat(scaleX)
-        writer.writeFloat(scaleY)
+    override fun write(output: DataOutput) {
+        output.writeFloat(x)
+        output.writeFloat(y)
+        output.writeFloat(scaleX)
+        output.writeFloat(scaleY)
     }
 }

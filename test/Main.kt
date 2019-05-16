@@ -2,6 +2,7 @@ import lime.Application
 import lime.Lime
 import lime.audio.Sound
 import lime.config
+import lime.editor.Editor
 import lime.graphics.*
 import lime.graphics.fonts.Font
 import lime.graphics.fonts.GlyphLayout
@@ -17,7 +18,6 @@ import org.joml.Random
 
 fun main() {
     Lime.start(Application(object : Application.State() {
-        val scene = Scene()
         var drawDebugScreen = false
 
         override fun onCreate() {
@@ -27,6 +27,9 @@ fun main() {
             }
 
             val random = Random(0L)
+
+            val scene = Lime.scenes["main"]
+            Lime.scenes.setActive("main", true)
 
             repeat(10) {
                 scene.createEntity {
@@ -51,15 +54,19 @@ fun main() {
         }
 
         override fun onFrame(delta: Double): Application.State {
-            scene.process(delta.toFloat())
-
             if (Lime.input.isKeyTyped(Keys.KEY_F1))
                 drawDebugScreen = !drawDebugScreen
+
+            if (Lime.input.isKeyTyped(Keys.KEY_1))
+                Lime.scenes.saveScene("main")
+
+            if (Lime.input.isKeyTyped(Keys.KEY_3))
+                Lime.scenes.loadScene("main")
 
             if (drawDebugScreen)
                 Lime.graphics.drawDebugScreen(requireNotNull(Lime.assets["font.ttf"]))
 
             return this
         }
-    }))
+    }), Lime.EngineMode.RUNTIME)
 }

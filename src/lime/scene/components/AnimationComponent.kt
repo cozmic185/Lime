@@ -4,9 +4,9 @@ import lime.Lime
 import lime.graphics.Animation
 import lime.graphics.Color
 import lime.graphics.ImageTexture
-import lime.io.DataReader
-import lime.io.DataWriter
 import lime.scene.Component
+import java.io.DataInput
+import java.io.DataOutput
 
 class AnimationComponent : Component() {
     var keyFramePaths = arrayOf("")
@@ -26,32 +26,32 @@ class AnimationComponent : Component() {
         animation = Animation(frameDuration, *keyFrames)
     }
 
-    override fun read(reader: DataReader) {
-        keyFramePaths = Array(reader.readInt()) {
-            reader.readString()
+    override fun read(input: DataInput) {
+        keyFramePaths = Array(input.readInt()) {
+            input.readUTF()
         }
 
-        frameDuration = reader.readFloat()
+        frameDuration = input.readFloat()
 
-        color.r = reader.readFloat()
-        color.g = reader.readFloat()
-        color.b = reader.readFloat()
-        color.a = reader.readFloat()
-        views = Array(reader.readInt()) {
-            reader.readString()
+        color.r = input.readFloat()
+        color.g = input.readFloat()
+        color.b = input.readFloat()
+        color.a = input.readFloat()
+        views = Array(input.readInt()) {
+            input.readUTF()
         }
     }
 
-    override fun write(writer: DataWriter) {
-        writer.writeInt(keyFramePaths.size)
-        keyFramePaths.forEach(writer::writeString)
-        writer.writeFloat(frameDuration)
+    override fun write(output: DataOutput) {
+        output.writeInt(keyFramePaths.size)
+        keyFramePaths.forEach(output::writeUTF)
+        output.writeFloat(frameDuration)
 
-        writer.writeFloat(color.r)
-        writer.writeFloat(color.g)
-        writer.writeFloat(color.b)
-        writer.writeFloat(color.a)
-        writer.writeInt(views.size)
-        views.forEach(writer::writeString)
+        output.writeFloat(color.r)
+        output.writeFloat(color.g)
+        output.writeFloat(color.b)
+        output.writeFloat(color.a)
+        output.writeInt(views.size)
+        views.forEach(output::writeUTF)
     }
 }

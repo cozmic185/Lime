@@ -1,6 +1,7 @@
 package lime.scene
 
 import lime.utils.ReflectionUtils
+import kotlin.reflect.KClass
 
 class ComponentType<T> private constructor(val name: String, private val supplier: () -> T) {
     companion object {
@@ -25,6 +26,17 @@ class ComponentType<T> private constructor(val name: String, private val supplie
         }
 
         operator fun get(name: String) = registered[name]
+
+        @Suppress("UNCHECKED_CAST")
+        fun getOrTryRegister(name: String): ComponentType<Component>? {
+            var type = this[name] as? ComponentType<Component>
+            if (type != null)
+                return type
+
+            val cls = Class.forName(name)?.kotlin as? KClass<Component> ?: return null
+            type = register(name) { ReflectionUtils.createInstance(cls) }
+            return type
+        }
     }
 
     var id = -1

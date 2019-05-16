@@ -1,19 +1,19 @@
 package lime.scene.components
 
-import lime.io.DataReader
-import lime.io.DataWriter
 import lime.scene.Component
 import lime.utils.Script
+import java.io.DataInput
+import java.io.DataOutput
 
 class ScriptComponent : Component() {
     var script: Script? = null
     var isStarted = false
 
-    override fun read(reader: DataReader) {
-        script?.read(reader)
+    override fun read(input: DataInput) {
+        script?.read(input)
     }
 
-    override fun write(writer: DataWriter) {
-        script?.write(writer)
+    override fun write(output: DataOutput) {
+        script?.write(output)
     }
 }

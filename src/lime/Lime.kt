@@ -1,11 +1,13 @@
 package lime
 
 import lime.audio.Audio
+import lime.editor.Editor
 import lime.events.EventManager
 import lime.graphics.Graphics
 import lime.graphics.ViewManager
 import lime.input.Input
 import lime.io.Assets
+import lime.scene.SceneManager
 import lime.utils.Time
 import lime.window.Window
 
@@ -18,7 +20,9 @@ object Lime {
     }
 
     private val shutdownListeners = arrayListOf<() -> Unit>()
-    private val frameListeners = arrayListOf<FrameListener>()
+    private val preFrameListeners = arrayListOf<FrameListener>()
+    private val postFrameListeners = arrayListOf<FrameListener>()
+    private val processingFrameListeners = arrayListOf<FrameListener>()
     private var running = false
 
     lateinit var application: Application
@@ -37,6 +41,9 @@ object Lime {
         private set
 
     lateinit var views: ViewManager
+        private set
+
+    lateinit var scenes: SceneManager
         private set
 
     lateinit var audio: Audio
@@ -65,12 +72,20 @@ object Lime {
         shutdownListeners.add(block)
     }
 
-    fun addFrameListener(listener: FrameListener) = synchronized(frameListeners) {
-        frameListeners.add(listener)
+    fun addPreFrameListener(listener: FrameListener) = synchronized(preFrameListeners) {
+        preFrameListeners += listener
     }
 
-    fun removeFrameListener(listener: FrameListener) = synchronized(frameListeners) {
-        frameListeners.remove(listener)
+    fun removePreFrameListener(listener: FrameListener) = synchronized(preFrameListeners) {
+        preFrameListeners -= listener
+    }
+
+    fun addPostFrameListener(listener: FrameListener) = synchronized(postFrameListeners) {
+        postFrameListeners += listener
+    }
+
+    fun removePostFrameListener(listener: FrameListener) = synchronized(postFrameListeners) {
+        postFrameListeners -= listener
     }
 
     fun start(application: Application, mode: EngineMode = EngineMode.RUNTIME) {
@@ -86,6 +101,7 @@ object Lime {
         window = createWindow(application.config)
         graphics = Graphics(application.config.adjustToContentScale)
         views = ViewManager()
+        scenes = SceneManager()
         audio = Audio(application.config.audioUpdateRate)
         assets = Assets(application.config.assetsDirectory)
 
@@ -104,16 +120,34 @@ object Lime {
             window.pollEvents()
             input.update()
 
-            synchronized(frameListeners) {
-                frameListeners.forEach {
-                    it(deltaTime)
-                }
+            synchronized(preFrameListeners) {
+                processingFrameListeners.clear()
+                processingFrameListeners += preFrameListeners
             }
 
-            graphics.beginFrame()
-            application.onFrame(deltaTime)
-            views.render()
-            graphics.endFrame()
+            processingFrameListeners.forEach {
+                it(deltaTime)
+            }
+
+            if (mode == Lime.EngineMode.EDITOR)
+                requireNotNull(Editor.window).render()
+            else {
+                graphics.beginFrame()
+                application.onFrame(deltaTime)
+                scenes.processAll(deltaTime.toFloat())
+                views.render()
+                graphics.endFrame()
+            }
+
+            synchronized(postFrameListeners) {
+                processingFrameListeners.clear()
+                processingFrameListeners += postFrameListeners
+            }
+
+            processingFrameListeners.forEach {
+                it(deltaTime)
+            }
+
             window.swapBuffers()
         }
 

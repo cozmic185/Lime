@@ -13,7 +13,8 @@ import org.lwjgl.system.MemoryStack.stackPush
 import org.lwjgl.system.MemoryUtil.*
 
 class Window(title: String, val width: Int, val height: Int) : Disposable {
-    private var handle = 0L
+    internal var handle = 0L
+        private set
 
     var title = title
         set(value) {
@@ -44,6 +45,8 @@ class Window(title: String, val width: Int, val height: Int) : Disposable {
                 y.get(0)
             }
         }
+
+    val aspect get() = width.toFloat() / height.toFloat()
 
     init {
         glfwSetErrorCallback { _, description ->

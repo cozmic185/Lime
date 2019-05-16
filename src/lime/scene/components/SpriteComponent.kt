@@ -3,9 +3,9 @@ package lime.scene.components
 import lime.Lime
 import lime.graphics.Color
 import lime.graphics.ImageTexture
-import lime.io.DataReader
-import lime.io.DataWriter
 import lime.scene.Component
+import java.io.DataInput
+import java.io.DataOutput
 
 class SpriteComponent : Component() {
     var path = ""
@@ -14,24 +14,24 @@ class SpriteComponent : Component() {
 
     val texture: ImageTexture? get() = Lime.assets[path]
 
-    override fun read(reader: DataReader) {
-        path = reader.readString()
-        color.r = reader.readFloat()
-        color.g = reader.readFloat()
-        color.b = reader.readFloat()
-        color.a = reader.readFloat()
-        views = Array(reader.readInt()) {
-            reader.readString()
+    override fun read(input: DataInput) {
+        path = input.readUTF()
+        color.r = input.readFloat()
+        color.g = input.readFloat()
+        color.b = input.readFloat()
+        color.a = input.readFloat()
+        views = Array(input.readInt()) {
+            input.readUTF()
         }
     }
 
-    override fun write(writer: DataWriter) {
-        writer.writeString(path)
-        writer.writeFloat(color.r)
-        writer.writeFloat(color.g)
-        writer.writeFloat(color.b)
-        writer.writeFloat(color.a)
-        writer.writeInt(views.size)
-        views.forEach(writer::writeString)
+    override fun write(output: DataOutput) {
+        output.writeUTF(path)
+        output.writeFloat(color.r)
+        output.writeFloat(color.g)
+        output.writeFloat(color.b)
+        output.writeFloat(color.a)
+        output.writeInt(views.size)
+        views.forEach(output::writeUTF)
     }
 }

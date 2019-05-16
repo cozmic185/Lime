@@ -40,29 +40,34 @@
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.11" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-nanovg:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-tinyfd:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-linux:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-nanovg:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-tinyfd:natives-linux:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-macos:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-macos:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-nanovg:natives-macos:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-macos:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-macos:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:natives-macos:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-tinyfd:natives-macos:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-windows:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-windows:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-nanovg:natives-windows:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-windows:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-windows:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:natives-windows:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-tinyfd:natives-windows:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.joml:joml:1.9.12" level="project" />
     <orderEntry type="library" name="Maven: org.dyn4j:dyn4j:3.3.0" level="project" />
+    <orderEntry type="library" name="LWJGUI" level="project" />
   </component>
 </module>

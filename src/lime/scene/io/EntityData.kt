@@ -1,39 +1,41 @@
 package lime.scene.io
 
-import lime.io.DataReader
-import lime.io.DataWriter
-import lime.scene.Component
 import lime.scene.ComponentType
 import lime.scene.Entity
 import lime.utils.Log
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
 
 @Suppress("UNCHECKED_CAST")
-data class EntityData(var id: Int = 0, val components: MutableMap<String, ByteArray> = hashMapOf()) {
-    private val dataReader = DataReader()
-    private val dataWriter = DataWriter()
-
+data class EntityData(val components: MutableMap<String, ByteArray> = hashMapOf()) {
     fun read(entity: Entity) {
-        entity.edit {
-            for ((typeName, data) in components) {
-                (ComponentType[typeName] as? ComponentType<Component>)?.let {
-                    if (scene.hasComponent(this, it))
-                        scene.addComponent(entity, it)
+        for ((typeName, data) in components) {
+            val type = ComponentType.getOrTryRegister(typeName)
+            if (type != null) {
+                val input = DataInputStream(ByteArrayInputStream(data))
 
-                    dataReader.setData(data)
-                    scene.getComponent(entity, it)?.read(dataReader)
-                } ?: Log.error(this::class, "Unable to locate ComponentType with name '$typeName', skipping loading it")
-            }
+                if (!entity.scene.hasComponent(entity, type)) {
+                    entity.edit {
+                        val component = scene.addComponent(entity, type)
+                        component.read(input)
+                    }
+                } else
+                    requireNotNull(entity.scene.getComponent(entity, type)).read(input)
+            } else
+                Log.error(this::class, "Unable to locate ComponentType with name '$typeName', skipping loading it")
         }
     }
 
     fun write(entity: Entity) {
         components.clear()
-        id = entity.id
-        entity.scene.makePersistent(entity) // Needed so the id of the specified entity is not falsely reused for a different one
         entity.forEach {
-            dataWriter.reset()
-            it.write(dataWriter)
-            components[it.type.name] = dataWriter.getData()
+            val stream = ByteArrayOutputStream()
+            val output = DataOutputStream(stream)
+
+            it.write(output)
+            components[it.type.name] = stream.toByteArray()
         }
     }
 }

@@ -1,14 +1,14 @@
 package lime.scene
 
-import lime.io.DataReader
-import lime.io.DataWriter
+import java.io.DataInput
+import java.io.DataOutput
 
 abstract class Component {
     lateinit var type: ComponentType<*>
         internal set
 
     open fun initialize() {}
-    open fun read(reader: DataReader) {}
-    open fun write(writer: DataWriter) {}
+    open fun read(input: DataInput) {}
+    open fun write(output: DataOutput) {}
     open fun dispose() {}
 }

@@ -1,17 +1,17 @@
 package lime.scene.components
 
-import lime.io.DataReader
-import lime.io.DataWriter
 import lime.scene.Component
+import java.io.DataInput
+import java.io.DataOutput
 
 class NameComponent : Component() {
     var name = ""
 
-    override fun read(reader: DataReader) {
-        name = reader.readString()
+    override fun read(input: DataInput) {
+        name = input.readUTF()
     }
 
-    override fun write(writer: DataWriter) {
-        writer.writeString(name)
+    override fun write(output: DataOutput) {
+        output.writeUTF(name)
     }
 }

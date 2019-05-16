@@ -22,11 +22,7 @@ class Scene : Disposable {
         listeners -= listener
     }
 
-    internal fun getEntityByID(id: Int) = entities.getEntity(id)
-
     internal fun removeAllComponents(entity: Entity) = components.removeAllComponents(entity)
-
-    internal fun makePersistent(entity: Entity) = entities.makePersistent(entity)
 
     internal fun action(block: () -> Unit) {
         if (isProcessing)
@@ -55,12 +51,13 @@ class Scene : Disposable {
 
     inline fun <reified T : Component> addComponent(entity: Entity, noinline initializer: T.() -> Unit = {}) = addComponent(entity, ComponentType.get<T>(), initializer)
 
-    fun <T : Component> addComponent(entity: Entity, type: ComponentType<T>, initializer: T.() -> Unit = {}) {
+    fun <T : Component> addComponent(entity: Entity, type: ComponentType<T>, initializer: T.() -> Unit = {}): T {
         require(entity.editing)
-        components.createComponent(entity, type, initializer)
+        val component = components.createComponent(entity, type, initializer)
         listeners.forEach {
             it.onComponentAdded(this, entity, type)
         }
+        return component
     }
 
     inline fun <reified T : Component> removeComponent(entity: Entity) = removeComponent(entity, ComponentType.get<T>())
@@ -135,7 +132,7 @@ class Scene : Disposable {
 
     fun clearEntities() {
         action {
-            entities.dispose()
+            entities.clear()
             components.dispose()
         }
     }

@@ -114,7 +114,7 @@ class Audio internal constructor(updateRate: Int) : Disposable {
 
                 registerFormat("wav", WAV)
 
-                Lime.addFrameListener(updater::update)
+                Lime.addPreFrameListener(updater::update)
             }
         }
     }

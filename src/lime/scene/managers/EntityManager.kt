@@ -5,7 +5,7 @@ import lime.scene.Entity
 import lime.scene.Scene
 import lime.utils.*
 
-class EntityManager(private val scene: Scene) : Disposable {
+class EntityManager(private val scene: Scene) {
     private class Family(bitField: BitField) {
         val componentBits = BitField(bitField)
         val entities = Bag<Entity>()
@@ -20,7 +20,6 @@ class EntityManager(private val scene: Scene) : Disposable {
     }
 
     private var currentID = 0
-    private val persistent = BitField()
     private val recycled = Bag<Int>()
     private val pool = Pool { Entity(scene) }
     private val families = Bag<Family>()
@@ -74,15 +73,9 @@ class EntityManager(private val scene: Scene) : Disposable {
         if (getFamily(entity.componentBits).remove(entity)) {
             entity.scene.removeAllComponents(entity)
             entity.componentBits.clear()
-            if (entity.id !in persistent)
-                recycled.add(entity.id)
             pool.free(entity)
         } else
             Log.fail(this::class, "Failed to remove entity from it's family, it likely was removed already")
-    }
-
-    fun makePersistent(entity: Entity) {
-        persistent += entity.id
     }
 
     fun getEntity(id: Int): Entity? {
@@ -94,10 +87,9 @@ class EntityManager(private val scene: Scene) : Disposable {
         return null
     }
 
-    override fun dispose() {
+    fun clear() {
         families.clear()
         recycled.clear()
-        persistent.clear()
         currentID = 0
     }
 }
